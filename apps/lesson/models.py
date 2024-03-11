@@ -10,7 +10,7 @@ class Category(models.Model):
         max_length=1500,
         verbose_name="Описание",
     )
-    durations=models.DurationField()
+    duration=models.DurationField()
     price=models.IntegerField(blank=False)
 
     def __str__(self):
@@ -53,4 +53,4 @@ class Grouplesson(Lesson):
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        related_name='group_lessons')
+        related_name='group_lesson')
