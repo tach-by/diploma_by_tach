@@ -50,7 +50,11 @@ class Individuallesson(Lesson):
 class Grouplesson(Lesson):
     pupils=models.ManyToManyField(
         User,
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
-        related_name='group_lesson')
+        through='Attendance'
+    )
+
+
+class Attendance(models.Model):
+    pupil = models.ForeignKey(User, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Grouplesson, on_delete=models.CASCADE)
+    attended = models.BooleanField(default=True)
