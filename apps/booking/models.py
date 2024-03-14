@@ -11,17 +11,39 @@ class Cabinet(models.Model):
         default="")
 
 class Booking(models.Model):
-    date= models.DateField()
-    cabinet=models.ForeignKey(Cabinet, on_delete=models.CASCADE)
-    lesson=models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    time_start=models.TimeField(unique_for_date=True)  #если тут unique_for_date=True то летят ошибки
-    duration=models.DurationField
-    time_end=models.TimeField()
-    repeat= models.BooleanField(default=False)
+    creator = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    date = models.DateField()
+    cabinet = models.ForeignKey(
+        Cabinet,
+        on_delete=models.CASCADE
+    )
+    lesson = models.ForeignKey(
+        Lesson,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+
+    )
+    time_start = models.TimeField()  #если тут unique_for_date=True то летят ошибки
+    duration = models.DurationField(
+        null=True,
+        blank=True
+    )
+    time_end = models.TimeField(
+        null=True,
+        blank=True
+    )
+    repeat = models.BooleanField(default=False)
+    writable = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
-        self.duration = self.lesson.category.duration * 60       #convert to minuts
-
+        if not self.duration:
+            self.duration = self.lesson.category.duration * 60       #convert to minuts
+        else:
+            self.duration = self.duration * 60
         start_datetime = datetime.combine(self.date, self.time_start)
 
         end_datetime = start_datetime + self.duration

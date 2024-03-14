@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from apps.user.models import User, Pupil
 
 class Category(models.Model):
     name = models.CharField(
@@ -39,7 +39,7 @@ class Lesson(models.Model):
 
 class Individuallesson(Lesson):
     pupil=models.ForeignKey(
-        User,
+        Pupil,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
@@ -49,12 +49,13 @@ class Individuallesson(Lesson):
 
 class Grouplesson(Lesson):
     pupils=models.ManyToManyField(
-        User,
+        Pupil,
         through='Attendance'
     )
 
 
 class Attendance(models.Model):
-    pupil = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField()
+    pupil = models.ForeignKey(Pupil, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Grouplesson, on_delete=models.CASCADE)
     attended = models.BooleanField(default=True)

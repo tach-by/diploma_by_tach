@@ -42,6 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    #local
+    "apps.user.apps.UserConfig",
+    "apps.user.apps.LessonConfig",
+    "apps.user.apps.BookingConfig"
 ]
 
 MIDDLEWARE = [
@@ -55,6 +60,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
+
+AUTH_USER_MODEL = 'user.User'
 
 TEMPLATES = [
     {
