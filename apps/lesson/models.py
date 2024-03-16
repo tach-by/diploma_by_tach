@@ -1,5 +1,7 @@
 from django.db import models
 from apps.user.models import User, Pupil
+from apps.booking.models import Booking
+
 
 class Category(models.Model):
     name = models.CharField(
@@ -26,8 +28,7 @@ class Lesson(models.Model):
         User,
         on_delete=models.CASCADE,
         blank=True,
-        null=True,
-        editable=False
+        null=True
     )
     category = models.ForeignKey(
         Category,
@@ -35,6 +36,22 @@ class Lesson(models.Model):
         blank=True,
         on_delete=models.SET_NULL
     )
+    description = models.TextField(
+        max_length=1500,
+        verbose_name="Описание",
+        null=True,
+        blank=True
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    class Meta:
+        verbose_name = 'Lesson'
+        verbose_name_plural = 'Lessons'
 
 
 class Individuallesson(Lesson):
@@ -43,19 +60,33 @@ class Individuallesson(Lesson):
         on_delete=models.CASCADE,
         blank=True,
         null=True,
-        editable=False
     )
+
+    def __str__(self):
+        return f"{self.creator} {self.pupil}"
+
+    class Meta:
+        verbose_name = 'Individual lesson'
+        verbose_name_plural = 'Individual lessons'
 
 
 class Grouplesson(Lesson):
-    pupils=models.ManyToManyField(
+    pupils = models.ManyToManyField(
         Pupil,
-        through='Attendance'
+        through='PupilsForGroupLesson'
     )
+
+    def __str__(self):
+        return f"{self.creator} {self.category}"
+
+    class Meta:
+        verbose_name = 'Group lesson'
+        verbose_name_plural = 'Group lessons'
 
 
 class Attendance(models.Model):
-    date = models.DateField()
+    booking= models.ForeignKey(Booking, on_delete=models.CASCADE)
     pupil = models.ForeignKey(Pupil, on_delete=models.CASCADE)
-    lesson = models.ForeignKey(Grouplesson, on_delete=models.CASCADE)
     attended = models.BooleanField(default=True)
+
+
