@@ -16,8 +16,9 @@ from apps.user.serializers import (
     UserRegisterSerializer,
     UserListSerializer,
     UserInfoSerializer,
+    PupilInfoSerializer
 )
-from apps.user.models import User
+from apps.user.models import User, Pupil
 
 
 class UserRegistrationGenericView(CreateAPIView):
@@ -119,3 +120,72 @@ class UserDetailGenericView(RetrieveUpdateDestroyAPIView):
             data=[]
         )
 
+
+class PupilDetailGenericView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PupilInfoSerializer
+
+    def get_object(self):
+        pupil_id = self.kwargs.get("pupil_id")
+        pupil_obj = get_object_or_404(Pupil, id=pupil_id)
+        return pupil_obj
+
+    def get(self, request: Request, *args, **kwargs):
+        pupil = self.get_object()
+        serializer = self.serializer_class(pupil)
+        return Response(
+            status=status.HTTP_200_OK,
+            data=serializer.data
+        )
+
+    def put(self, request: Request, *args, **kwargs):
+        pupil = self.get_object()
+        serializer = self.serializer_class(
+            pupil,
+            data=request.data,
+            partial=True
+        )
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(
+                status=status.HTTP_200_OK,
+                data=serializer.data
+            )
+        return Response(
+            status=status.HTTP_400_BAD_REQUEST,
+            data=serializer.errors
+        )
+
+    def delete(self, request: Request, *args, **kwargs):
+        pupil = self.get_object()
+        pupil.delete()
+        return Response(
+            status=status.HTTP_200_OK,
+            data=[]
+        )
+
+
+class ListPupilsOfUserGenericView(ListAPIView):
+    permission_classes = [IsAuthenticated,]
+    serializer_class = PupilInfoSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs.get("user_id")
+        pupils = Pupil.objects.filter(user_id=user_id)
+        return pupils
+
+    def get(self, request: Request, *args, **kwargs):
+        pupils = self.get_queryset()
+
+        if not pupils:
+            return Response(
+                status=status.HTTP_404_NOT_FOUND,
+                data=[]
+            )
+
+        serializer = self.serializer_class(pupils, many=True)
+
+        return Response(
+            status=status.HTTP_200_OK,
+            data=serializer.data
+        )
