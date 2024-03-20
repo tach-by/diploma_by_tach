@@ -9,6 +9,8 @@ from apps.user.views import (
     UserRegistrationGenericView,
     ListUsersGenericView,
     UserDetailGenericView,
+    PupilDetailGenericView,
+    ListPupilsOfUserGenericView
 )
 
 
@@ -18,4 +20,6 @@ urlpatterns = [
     path("register/", UserRegistrationGenericView.as_view()),
     path("auth/login/", TokenObtainPairView.as_view()),
     path("auth/refresh-token/", TokenRefreshView.as_view()),
+    path('users/<int:user_id>/pupils/', ListPupilsOfUserGenericView.as_view()),
+    path('users/<int:user_id>/pupils/<int:pupil_id>/', PupilDetailGenericView.as_view(),),
 ]
