@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from apps.user.error_messages import PASSWORDS_DO_NOT_MATCH_ERROR
-from apps.user.models import User
+from apps.user.models import User, Pupil
 
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -46,7 +46,15 @@ class UserListSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class PupilPreviewSerializer:
+    class Meta:
+        model = Pupil
+        fields = ['first_name', 'Last_name']
+
+
 class UserInfoSerializer(serializers.ModelSerializer):
+    pupils = PupilPreviewSerializer(many=True, read_only=True)
+
     class Meta:
         model = User
         fields = [
@@ -56,5 +64,18 @@ class UserInfoSerializer(serializers.ModelSerializer):
             'last_name',
             'username',
             'phone',
-            'date_joined'
+            'date_joined',
+            'pupils'
+        ]
+
+
+class PupilInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pupil
+        fields = [
+            'user',
+            'first_name',
+            'last_name',
+            'date_of_birth',
+            'description'
         ]
