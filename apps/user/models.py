@@ -69,3 +69,5 @@ class Pupil(models.Model):
         default="Here you can add your description..."
     )
 
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
