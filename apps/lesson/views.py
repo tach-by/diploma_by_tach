@@ -7,7 +7,10 @@ from rest_framework.generics import (
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAdminUser
+)
 
 from apps.lesson.success_messages import (
     NEW_CATEGORY_CREATED_MESSAGE,
@@ -22,7 +25,7 @@ from apps.lesson.serializers import (
 
 
 class CategoryListGenericView(ListAPIView):
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated]
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
 
@@ -45,6 +48,8 @@ class CategoryListGenericView(ListAPIView):
 
 
 class CategoryCreateView(CreateAPIView):
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    serializer_class = CategorySerializer
 
     def post(self, request: Request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
