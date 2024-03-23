@@ -1,5 +1,5 @@
 from django.db import models
-from apps.lesson.models import Category, Lesson
+from apps.lesson.models import Lesson
 from apps.user.models import User
 from datetime import datetime
 

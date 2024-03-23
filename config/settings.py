@@ -50,8 +50,8 @@ INSTALLED_APPS = [
 
     #local
     "apps.user.apps.UserConfig",
-    "apps.user.apps.LessonConfig",
-    "apps.user.apps.BookingConfig"
+    "apps.lesson.apps.LessonConfig",
+    "apps.booking.apps.BookingConfig"
 ]
 
 MIDDLEWARE = [

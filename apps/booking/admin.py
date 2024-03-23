@@ -4,9 +4,9 @@ from apps.booking.models import Cabinet, Booking
 
 @admin.register(Cabinet)
 class CabinetAdmin(admin.ModelAdmin):
-    list_display = ('name')
-    list_filter = ('name')
-    search_fields = ('name')
+    list_display = ('name',)
+    list_filter = ('name',)
+    search_fields = ('name',)
 
 
 @admin.register(Booking)
