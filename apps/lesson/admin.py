@@ -1,16 +1,16 @@
 from django.contrib import admin
-from apps.lesson.models import Grouplesson, Individuallesson
+from apps.lesson.models import Lesson
 
 # Register your models here.
 
 
-@admin.register(Grouplesson)
-class GrouplessonAdmin(admin.ModelAdmin):
-    list_display = ('category', 'creator')
-    list_filter = ('category', 'creator')
+# @admin.register(Grouplesson)
+# class GrouplessonAdmin(admin.ModelAdmin):
+#     list_display = ('category', 'teacher')
+#     list_filter = ('category', 'teacher')
 
 
-@admin.register(Individuallesson)
-class IndividuallessonAdmin(admin.ModelAdmin):
-    list_display = ('category', 'creator')
-    list_filter = ('category', 'creator')
+@admin.register(Lesson)
+class LessonAdmin(admin.ModelAdmin):
+    list_display = ('category', 'teacher')
+    list_filter = ('category', 'teacher')

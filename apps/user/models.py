@@ -45,7 +45,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     def __str__(self):
-        return self.email
+        return f"{self.first_name} {self.last_name}"
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

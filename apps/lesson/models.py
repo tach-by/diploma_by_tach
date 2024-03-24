@@ -1,7 +1,6 @@
 from django.db import models
 from apps.user.models import User, Pupil
 from apps.category.models import Category
-# from apps.booking.models import Booking
 
 
 class Lesson(models.Model):
@@ -36,42 +35,12 @@ class Lesson(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True
     )
+    group = models.BooleanField(default=False)
+    pupils = models.ManyToManyField(Pupil)
+
+    def __str__(self):
+        return f"{self.teacher} {self.description[:15]}"
 
     class Meta:
         verbose_name = 'Lesson'
         verbose_name_plural = 'Lessons'
-
-
-class Individuallesson(Lesson):
-    pupil=models.ForeignKey(
-        Pupil,
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
-    )
-
-    def __str__(self):
-        return f"{self.creator} {self.pupil}"
-
-    class Meta:
-        verbose_name = 'Individual lesson'
-        verbose_name_plural = 'Individual lessons'
-
-
-class Grouplesson(Lesson):
-    pupils = models.ManyToManyField(Pupil)
-
-    def __str__(self):
-        return f"{self.creator} {self.category}"
-
-    class Meta:
-        verbose_name = 'Group lesson'
-        verbose_name_plural = 'Group lessons'
-
-
-# class Attendance(models.Model):
-#     booking= models.ForeignKey(Booking, on_delete=models.CASCADE)
-#     pupil = models.ForeignKey(Pupil, on_delete=models.CASCADE)
-#     attended = models.BooleanField(default=True)
-
-

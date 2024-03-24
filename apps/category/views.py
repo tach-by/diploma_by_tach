@@ -72,7 +72,7 @@ class CategoryCreateView(CreateAPIView):
 
 
 class RetrieveCategoryGenericView(RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminUser]
     serializer_class = CategorySerializer
 
     def get_object(self):

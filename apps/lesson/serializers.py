@@ -11,6 +11,7 @@ from apps.user.serializers import PupilPreviewSerializer
 
 
 class IndividuallessonSerializer(serializers.ModelSerializer):
+    creator = serializers.StringRelatedField()
     teacher = serializers.SlugRelatedField(
         slug_field='get_full_name',
         queryset=User.objects.filter(is_staff=True)
@@ -19,9 +20,13 @@ class IndividuallessonSerializer(serializers.ModelSerializer):
         slug_field='get_full_name',
         queryset=Pupil.objects.all()
     )
+    category = serializers.SlugRelatedField(
+        slug_field='name',
+        queryset=Pupil.objects.all()
+    )
     class Meta:
         model = Individuallesson
-        fields = ['creator', 'teacher','category', 'description', 'created_at', 'updated_at', 'pupil']
+        fields = ['creator', 'teacher','category', 'description', 'pupil']
 
     def validate_description(self, value):
         if len(value) > 1500:
@@ -30,6 +35,7 @@ class IndividuallessonSerializer(serializers.ModelSerializer):
             )
 
         return value
+
 
 class GrouplessonSerializer(serializers.ModelSerializer):
     teacher = serializers.SlugRelatedField(
@@ -40,7 +46,11 @@ class GrouplessonSerializer(serializers.ModelSerializer):
         slug_field='get_full_name',
         queryset=Pupil.objects.all()
     )
+    category = serializers.SlugRelatedField(
+        slug_field='name',
+        queryset=Pupil.objects.all()
+    )
 
     class Meta:
         model = Grouplesson
-        fields = ['creator','teacher', 'category', 'description', 'created_at', 'updated_at', 'pupils']
+        fields = ['teacher', 'category', 'description', 'created_at', 'updated_at', 'pupils']
