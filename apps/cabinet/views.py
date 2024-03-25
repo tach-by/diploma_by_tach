@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from apps.cabinet.serializers import CabinetSerializer
+from apps.cabinet.models import Cabinet
+from rest_framework.viewsets import ModelViewSet
 
-# Create your views here.
+
+class CabinetViewSet(ModelViewSet):
+    queryset = Cabinet.objects.all()
+    serializer_class = CabinetSerializer

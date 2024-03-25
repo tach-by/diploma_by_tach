@@ -1,0 +1,1 @@
+CABINET_DISCRIPTION_LEN_ERROR_MESSAGE = "The discription of cabinet should not be longer than 1500 characters!"
