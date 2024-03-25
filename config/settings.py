@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     "apps.user.apps.UserConfig",
     "apps.lesson.apps.LessonConfig",
     "apps.booking.apps.BookingConfig",
-    "apps.category.apps.CategoryConfig"
+    "apps.category.apps.CategoryConfig",
+    "apps.cabinet.apps.CabinetConfig"
 ]
 
 MIDDLEWARE = [

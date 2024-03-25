@@ -1,12 +1,8 @@
 from django.contrib import admin
-from apps.booking.models import Cabinet, Booking
+from apps.booking.models import Booking
 
 
-@admin.register(Cabinet)
-class CabinetAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    list_filter = ('name',)
-    search_fields = ('name',)
+
 
 
 @admin.register(Booking)
