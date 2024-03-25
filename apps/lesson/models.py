@@ -35,11 +35,16 @@ class Lesson(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True
     )
-    group = models.BooleanField(default=False)
-    pupils = models.ManyToManyField(Pupil)
+    pupil = models.ForeignKey(
+        Pupil,
+        verbose_name='pupil',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
-        return f"{self.teacher} {self.description[:15]}"
+        return f"{self.teacher} {self.pupil} {self.category}"
 
     class Meta:
         verbose_name = 'Lesson'

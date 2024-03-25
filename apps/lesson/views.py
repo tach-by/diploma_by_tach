@@ -12,44 +12,47 @@ from rest_framework.permissions import (
     IsAuthenticated,
     IsAdminUser
 )
-from apps.lesson.models import (
-    Individuallesson,
-    Grouplesson
-)
-from apps.lesson.serializers import (
-    IndividuallessonSerializer,
-    GrouplessonSerializer
+from apps.lesson.models import Lesson
+from apps.user.models import Pupil
+from apps.lesson.serializers import LessonSerializer
+from apps.lesson.success_messages import (
+    NEW_LESSON_CREATED_MESSAGE,
+    LESSON_UPDATED_SUCCESSFULLY_MESSAGE,
+    LESSON_WAS_DELETED_SUCCESSFUL
 )
 
-class IndividuallessonListGenericView(ListCreateAPIView):
-    serializer_class = IndividuallessonSerializer
+
+class LessonListGenericView(ListCreateAPIView):
+    serializer_class = LessonSerializer
 
     def get_queryset(self):
-        queryset = Individuallesson.objects.select_related(
-            'category'
+        queryset = Lesson.objects.select_related(
+            'category',
+            'pupil',
+            'teacher'
         )
 
-        status_obj = self.request.query_params.get("status")
         category = self.request.query_params.get("category")
+        teacher = self.request.query_params.get("teacher")
+        pupil = self.request.query_params.get("pupil")
         date_from = self.request.query_params.get("date_from")
         date_to = self.request.query_params.get("date_to")
-        deadline = self.request.query_params.get("deadline")
 
-        if status_obj:
-            queryset = queryset.filter(
-                status__name=status_obj
-            )
         if category:
             queryset = queryset.filter(
                 category__name=category
             )
         if date_from and date_to:
             queryset = queryset.filter(
-                date_started__range=[date_from, date_to]
+                created_at__range=[date_from, date_to]
             )
-        if deadline:
+        if pupil:
             queryset = queryset.filter(
-                deadline=deadline
+                pupil_id=pupil
+            )
+        if teacher:
+            queryset = queryset.filter(
+                teaher_id=teacher
             )
 
         return queryset
@@ -73,6 +76,9 @@ class IndividuallessonListGenericView(ListCreateAPIView):
             data=[]
         )
 
+    def perform_create(self, serializer):
+        serializer.save(creator=self.request.user)
+
     def post(self, request: Request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
 
@@ -82,7 +88,90 @@ class IndividuallessonListGenericView(ListCreateAPIView):
         return Response(
             status=status.HTTP_201_CREATED,
             data={
-                "message": NEW_SUBTASK_CREATED_MESSAGE,
+                "message": NEW_LESSON_CREATED_MESSAGE,
+                "data": serializer.data
+            }
+        )
+
+
+class LessonDetailGenericView(RetrieveUpdateDestroyAPIView):
+    serializer_class = LessonSerializer
+
+    def get_object(self):
+        lesson_id = self.kwargs.get("lesson_id")
+
+        lesson = get_object_or_404(Lesson, id=lesson_id)
+
+        return lesson
+
+    def get(self, request: Request, *args, **kwargs):
+        lesson = self.get_object()
+
+        serializer = self.serializer_class(lesson)
+
+        return Response(
+            status=status.HTTP_200_OK,
+            data=serializer.data
+        )
+
+    def put(self, request: Request, *args, **kwargs):
+        lesson = self.get_object()
+
+        serializer = self.serializer_class(lesson, data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+
+            return Response(
+                status=status.HTTP_200_OK,
+                data={
+                    "message": LESSON_UPDATED_SUCCESSFULLY_MESSAGE,
+                    "data": serializer.data
+                }
+            )
+        else:
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST,
+                data=serializer.errors
+            )
+
+    def delete(self, request, *args, **kwargs):
+        lesson = self.get_object()
+
+        lesson.delete()
+
+        return Response(
+            status=status.HTTP_200_OK,
+            data=LESSON_WAS_DELETED_SUCCESSFUL
+        )
+
+
+class LessonListForParentGenericView(ListCreateAPIView):
+    serializer_class = LessonSerializer
+
+    def get_queryset(self):
+
+        user = self.request.user
+
+        pupils = Pupil.objects.filter(user=user)
+
+        queryset = Lesson.objects.filter(pupil__in=pupils)
+
+        return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(creator=self.request.user)
+
+    def post(self, request: Request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(
+            status=status.HTTP_201_CREATED,
+            data={
+                "message": NEW_LESSON_CREATED_MESSAGE,
                 "data": serializer.data
             }
         )
