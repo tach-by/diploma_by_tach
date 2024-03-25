@@ -2,6 +2,7 @@ from rest_framework.generics import (
     get_object_or_404,
     CreateAPIView,
     ListAPIView,
+    ListCreateAPIView,
     RetrieveUpdateDestroyAPIView,
 )
 from rest_framework.permissions import (
@@ -19,6 +20,11 @@ from apps.user.serializers import (
     PupilInfoSerializer
 )
 from apps.user.models import User, Pupil
+from apps.user.success_messages import (
+    PUPIL_UPDATED_SUCCESSFULLY_MESSAGE,
+    NEW_PUPIL_CREATED_MESSAGE,
+    PUPIL_WAS_DELETED_SUCCESSFUL
+)
 
 
 class UserRegistrationGenericView(CreateAPIView):
@@ -149,7 +155,10 @@ class PupilDetailGenericView(RetrieveUpdateDestroyAPIView):
             serializer.save()
             return Response(
                 status=status.HTTP_200_OK,
-                data=serializer.data
+                data={
+                    "message": PUPIL_UPDATED_SUCCESSFULLY_MESSAGE,
+                    "data": serializer.data
+                }
             )
         return Response(
             status=status.HTTP_400_BAD_REQUEST,
@@ -161,11 +170,11 @@ class PupilDetailGenericView(RetrieveUpdateDestroyAPIView):
         pupil.delete()
         return Response(
             status=status.HTTP_200_OK,
-            data=[]
+            data=PUPIL_WAS_DELETED_SUCCESSFUL
         )
 
 
-class ListPupilsOfUserGenericView(ListAPIView):
+class ListPupilsOfUserGenericView(ListCreateAPIView):
     permission_classes = [IsAuthenticated,]
     serializer_class = PupilInfoSerializer
 
@@ -188,4 +197,22 @@ class ListPupilsOfUserGenericView(ListAPIView):
         return Response(
             status=status.HTTP_200_OK,
             data=serializer.data
+        )
+
+    def post(self, request: Request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+
+            return Response(
+                status=status.HTTP_201_CREATED,
+                data={
+                    "message": NEW_PUPIL_CREATED_MESSAGE,
+                    "data": serializer.data
+                }
+            )
+        return Response(
+            status=status.HTTP_400_BAD_REQUEST,
+            data=serializer.errors
         )

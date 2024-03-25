@@ -14,6 +14,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             'email',
             'first_name',
             'last_name',
+            'phone',
             'password',
             'password2'
         ]
@@ -34,6 +35,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             email=validated_data.get("email"),
             first_name=validated_data.get("first_name"),
             last_name=validated_data.get("last_name"),
+            phone=validated_data.get("phone"),
             password=validated_data.get("password")
         )
 
@@ -46,7 +48,7 @@ class UserListSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PupilPreviewSerializer:
+class PupilPreviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pupil
         fields = ['first_name', 'Last_name']

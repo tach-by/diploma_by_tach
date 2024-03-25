@@ -53,8 +53,7 @@ class UserManager(BaseUserManager):
             email=email,
             first_name=first_name,
             last_name=last_name,
-            password=password,
-            phone=phone
+            phone=phone,
             **extra_fields
         )
 

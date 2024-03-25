@@ -50,8 +50,10 @@ INSTALLED_APPS = [
 
     #local
     "apps.user.apps.UserConfig",
-    "apps.user.apps.LessonConfig",
-    "apps.user.apps.BookingConfig"
+    "apps.lesson.apps.LessonConfig",
+    "apps.booking.apps.BookingConfig",
+    "apps.category.apps.CategoryConfig",
+    "apps.cabinet.apps.CabinetConfig"
 ]
 
 MIDDLEWARE = [
@@ -143,7 +145,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication'
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.AllowAny'
     ],
 }
 

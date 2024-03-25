@@ -45,8 +45,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     def __str__(self):
-        return self.email
+        return f"{self.first_name} {self.last_name}"
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.set_password(self.password)
+        super().save(*args, **kwargs)
     @property
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
@@ -70,4 +74,8 @@ class Pupil(models.Model):
     )
 
     def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+    @property
+    def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
