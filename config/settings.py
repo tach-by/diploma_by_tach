@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     # 3rd-party
     "rest_framework",
     "rest_framework_simplejwt",
-
+    "drf_yasg",
     #local
     "apps.user.apps.UserConfig",
     "apps.lesson.apps.LessonConfig",
