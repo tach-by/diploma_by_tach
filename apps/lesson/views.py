@@ -23,6 +23,7 @@ from apps.lesson.success_messages import (
 
 
 class LessonListGenericView(ListCreateAPIView):
+    permission_classes = [IsAuthenticated, IsAdminUser]
     serializer_class = LessonSerializer
 
     def get_queryset(self):
@@ -95,6 +96,7 @@ class LessonListGenericView(ListCreateAPIView):
 
 
 class LessonDetailGenericView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = LessonSerializer
 
     def get_object(self):
@@ -147,6 +149,7 @@ class LessonDetailGenericView(RetrieveUpdateDestroyAPIView):
 
 
 class LessonListForParentGenericView(ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = LessonSerializer
 
     def get_queryset(self):
