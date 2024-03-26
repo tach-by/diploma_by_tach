@@ -46,6 +46,10 @@ class Lesson(models.Model):
     def __str__(self):
         return f"{self.teacher} {self.pupil} {self.category}"
 
+    @property
+    def get_full_name(self):
+        return f"{self.teacher} {self.pupil} {self.category}"
+
     class Meta:
         verbose_name = 'Lesson'
         verbose_name_plural = 'Lessons'

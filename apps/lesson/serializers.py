@@ -7,7 +7,6 @@ from apps.lesson.error_messages import (
 )
 from apps.lesson.models import Lesson
 from apps.user.models import Pupil, User
-from apps.user.serializers import PupilPreviewSerializer
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -27,7 +26,7 @@ class LessonSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lesson
-        fields = ['creator', 'teacher', 'category', 'description', 'group', 'pupils']
+        fields = ['creator', 'teacher', 'category', 'description', 'pupil']
 
     def validate_description(self, value):
         if len(value) > 1500:

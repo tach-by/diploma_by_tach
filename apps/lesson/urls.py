@@ -9,6 +9,6 @@ from apps.lesson.views import (
 
 urlpatterns = [
     path("", LessonListGenericView.as_view()),
-    path("<int:subtask_id>/", LessonDetailGenericView.as_view()),
+    path("<int:lesson_id>/", LessonDetailGenericView.as_view()),
     path("mylessons/", LessonListForParentGenericView.as_view())
 ]
