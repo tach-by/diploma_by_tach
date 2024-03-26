@@ -9,7 +9,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import (
     IsAuthenticated,
-    IsAdminUser
+    IsAdminUser,
+    AllowAny
 )
 
 from apps.category.success_messages import (
@@ -25,7 +26,7 @@ from apps.category.serializers import (
 
 
 class CategoryListGenericView(ListAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
 

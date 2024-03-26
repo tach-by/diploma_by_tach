@@ -175,7 +175,7 @@ class PupilDetailGenericView(RetrieveUpdateDestroyAPIView):
 
 
 class ListPupilsOfUserGenericView(ListCreateAPIView):
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated]
     serializer_class = PupilInfoSerializer
 
     def get_queryset(self):
