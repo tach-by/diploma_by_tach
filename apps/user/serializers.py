@@ -51,7 +51,7 @@ class UserListSerializer(serializers.ModelSerializer):
 class PupilPreviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pupil
-        fields = ['first_name', 'Last_name']
+        fields = ['first_name', 'last_name']
 
 
 class UserInfoSerializer(serializers.ModelSerializer):

@@ -10,7 +10,7 @@ from apps.booking.error_messages import (
 )
 from apps.lesson.models import Lesson
 from datetime import timedelta
-from utils import calculate_time_end
+from apps.booking.utils import calculate_time_end
 
 
 def validate_fields(attrs):
