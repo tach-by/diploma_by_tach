@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from apps.booking.models import Booking
 
 
 def get_week_range(week_type):
@@ -29,3 +30,27 @@ def calculate_time_end(date, time_start, duration):
     time_end = end_datetime.time()
 
     return time_end
+
+
+def create_repeat_bookings():
+    start_of_week , end_of_week = get_week_range("current")
+
+    bookings_to_repeat = Booking.objects.filter(
+        date__range=(start_of_week, end_of_week),
+        repeat=True
+    )
+
+    # Создание новых бронирований на две недели вперед
+    for booking in bookings_to_repeat:
+        new_date = booking.date + timedelta(weeks=2)
+        new_booking = Booking.objects.create(
+            creator=booking.creator,
+            date=new_date,
+            cabinet=booking.cabinet,
+            lesson=booking.lesson,
+            time_start=booking.time_start,
+            duration=booking.duration,
+            repeat=True,
+            writable=booking.writable
+        )
+        print(f"Создано повторяющееся бронирование: {new_booking}")
