@@ -10,7 +10,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import (
     IsAuthenticated,
-    IsAdminUser
+    IsAdminUser,
+    AllowAny
 )
 from apps.booking.models import Booking
 from apps.user.models import Pupil
@@ -208,8 +209,9 @@ class BookingwriteGenericView(RetrieveUpdateAPIView):
             )
 
 class BookingListwritableGenericView(ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     serializer_class = BookingwritableSerializer
+
     def get_queryset(self):
 
         queryset = Booking.objects.filter(writable=True)
