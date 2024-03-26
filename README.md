@@ -1,4 +1,6 @@
 # Diploma Project by Tach
+## Purpose:
+The application is designed to schedule the lessons of teachers working in the same classroom. And also to show off free time for recording, which parents can enroll.
 
 ## Overview
 
