@@ -56,4 +56,8 @@ class Booking(models.Model):
 
         if not self.lesson:
             self.writable = True
+        boks = Booking.objects.filter(cabinet=self.cabinet, date=self.date)
+        for bok in boks:
+            if (bok.time_start <= self.time_start < bok.time_end) or (bok.time_start < self.time_end <= bok.time_end):
+                return "Время недоступно для записи"
         super().save(*args, **kwargs)

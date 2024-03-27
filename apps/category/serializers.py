@@ -32,3 +32,26 @@ class CategorySerializer(serializers.ModelSerializer):
             )
 
         return value
+
+
+class CategoryUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+    def validate_name(self, value):
+
+        if len(value) < 4 or len(value) > 25:
+            raise ValidationError(
+                CATEGORY_NAME_LEN_ERROR_MESSAGE
+            )
+
+        return value
+
+    def validate_description(self, value):
+        if len(value) > 1500:
+            raise ValidationError(
+                CATEGORY_DISCRIPTION_LEN_ERROR_MESSAGE
+            )
+
+        return value

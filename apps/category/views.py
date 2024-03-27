@@ -21,6 +21,7 @@ from apps.category.success_messages import (
 from apps.category.models import Category
 from apps.category.serializers import (
     CategorySerializer,
+    CategoryUpdateSerializer
 
 )
 
@@ -74,7 +75,7 @@ class CategoryCreateView(CreateAPIView):
 
 class RetrieveCategoryGenericView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
-    serializer_class = CategorySerializer
+    serializer_class = CategoryUpdateSerializer
 
     def get_object(self):
         category_id = self.kwargs.get("category_id")

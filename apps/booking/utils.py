@@ -54,3 +54,28 @@ def create_repeat_bookings():
             writable=booking.writable
         )
         print(f"Создано повторяющееся бронирование: {new_booking}")
+
+
+def create_repeat_bookings_days(period):
+    today = datetime.now().date()
+
+    bookings_to_repeat = Booking.objects.filter(
+        date=today,
+        repeat=True
+    )
+
+
+    for booking in bookings_to_repeat:
+        new_date = booking.date + timedelta(days=period)
+        new_booking = Booking.objects.create(
+            creator=booking.creator,
+            date=new_date,
+            cabinet=booking.cabinet,
+            lesson=booking.lesson,
+            time_start=booking.time_start,
+            duration=booking.duration,
+            repeat=True,
+            writable=booking.writable
+        )
+        print(f"Создано повторяющееся бронирование: {new_booking}")
+
