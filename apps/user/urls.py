@@ -22,6 +22,6 @@ urlpatterns = [
     path("register/", UserRegistrationGenericView.as_view()),
     path("auth/login/", CustomTokenObtainPairView.as_view()),
     path("auth/refresh-token/", TokenRefreshView.as_view()),
-    path('users/<int:user_id>/pupils/', ListPupilsOfUserGenericView.as_view()),
-    path('users/<int:user_id>/pupils/<int:pupil_id>/', PupilDetailGenericView.as_view(),),
+    path('pupils/', ListPupilsOfUserGenericView.as_view()),
+    path('pupils/<int:pupil_id>/', PupilDetailGenericView.as_view(),),
 ]

@@ -12,11 +12,11 @@ from apps.user.models import Pupil, User
 class LessonSerializer(serializers.ModelSerializer):
     creator = serializers.StringRelatedField()
     teacher = serializers.SlugRelatedField(
-        slug_field='get_full_name',
+        slug_field='first_name',
         queryset=User.objects.filter(is_staff=True)
     )
     pupil = serializers.SlugRelatedField(
-        slug_field='get_full_name',
+        slug_field='first_name',
         queryset=Pupil.objects.all(),
     )
     category = serializers.SlugRelatedField(

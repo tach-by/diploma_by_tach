@@ -13,6 +13,6 @@ urlpatterns = [
     path("<int:booking_id>/", BookingDetailGenericView.as_view()),
     path("mybookings/", BookingListForParentGenericView.as_view()),
     path("writable/", BookingListwritableGenericView.as_view()),
-    path("writable/write", BookingwriteGenericView.as_view()),
+    path("writable/<int:booking_id>/", BookingwriteGenericView.as_view()),
 
 ]

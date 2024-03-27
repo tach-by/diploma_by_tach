@@ -7,7 +7,8 @@ from rest_framework.generics import (
 )
 from rest_framework.permissions import (
     IsAuthenticated,
-    IsAdminUser
+    IsAdminUser,
+    AllowAny
 )
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -23,12 +24,16 @@ from apps.user.models import User, Pupil
 from apps.user.success_messages import (
     PUPIL_UPDATED_SUCCESSFULLY_MESSAGE,
     NEW_PUPIL_CREATED_MESSAGE,
-    PUPIL_WAS_DELETED_SUCCESSFUL
+    PUPIL_WAS_DELETED_SUCCESSFUL,
+    NEW_USER_CREATED_MESSAGE,
+    USER_UPDATED_SUCCESSFULLY_MESSAGE,
+    USER_WAS_DELETED_SUCCESSFUL
 )
 
 
 class UserRegistrationGenericView(CreateAPIView):
     serializer_class = UserRegisterSerializer
+    permission_classes = [AllowAny]
 
     def post(self, request: Request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -38,7 +43,10 @@ class UserRegistrationGenericView(CreateAPIView):
 
             return Response(
                 status=status.HTTP_201_CREATED,
-                data=serializer.data
+                data={
+                    "message": NEW_USER_CREATED_MESSAGE,
+                    "data": serializer.data
+                }
             )
         return Response(
             status=status.HTTP_400_BAD_REQUEST,
@@ -109,7 +117,10 @@ class UserDetailGenericView(RetrieveUpdateDestroyAPIView):
 
             return Response(
                 status=status.HTTP_200_OK,
-                data=serializer.data
+                data={
+                    "message": USER_UPDATED_SUCCESSFULLY_MESSAGE,
+                    "data": serializer.data
+                }
             )
         return Response(
             status=status.HTTP_400_BAD_REQUEST,
@@ -123,7 +134,10 @@ class UserDetailGenericView(RetrieveUpdateDestroyAPIView):
 
         return Response(
             status=status.HTTP_200_OK,
-            data=[]
+            data={
+                "message": USER_WAS_DELETED_SUCCESSFUL,
+                "data": []
+            }
         )
 
 
@@ -170,7 +184,11 @@ class PupilDetailGenericView(RetrieveUpdateDestroyAPIView):
         pupil.delete()
         return Response(
             status=status.HTTP_200_OK,
-            data=PUPIL_WAS_DELETED_SUCCESSFUL
+            data={
+                "message": PUPIL_WAS_DELETED_SUCCESSFUL,
+                "data": []
+            }
+
         )
 
 

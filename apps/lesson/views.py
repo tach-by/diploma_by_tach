@@ -98,6 +98,7 @@ class LessonListGenericView(ListCreateAPIView):
 class LessonDetailGenericView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = LessonSerializer
+    queryset = Lesson.objects.all()
 
     def get_object(self):
         lesson_id = self.kwargs.get("lesson_id")

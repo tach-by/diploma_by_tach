@@ -89,7 +89,7 @@ class BookingwritableSerializer(serializers.ModelSerializer):
     cabinet = serializers.StringRelatedField(read_only=True)
     lesson = serializers.SlugRelatedField(
         slug_field='get_full_name',
-        queryset=Lesson.objects.none(),
+        queryset=Lesson.objects.all(),
     )
     time_start = serializers.TimeField(read_only=True)
     date = serializers.DateField(read_only=True)
@@ -97,13 +97,6 @@ class BookingwritableSerializer(serializers.ModelSerializer):
     time_end = serializers.TimeField(read_only=True)
     class Meta:
         model = Booking
-        fields = ['creator', 'date', 'cabinet', 'lesson', 'time_start', 'duration', 'time_end', 'writable']
+        fields = ['id','creator', 'date', 'cabinet', 'lesson', 'time_start', 'duration', 'time_end', 'writable']
 
-    def __init__(self, *args, **kwargs):
-        super(BookingwritableSerializer, self).__init__(*args, **kwargs)
 
-        user = self.context.get('request').user
-
-        pupils = Pupil.objects.filter(user=user)
-
-        self.fields['lesson'].queryset = Lesson.objects.filter(pupil__in=pupils)

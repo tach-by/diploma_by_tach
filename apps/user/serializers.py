@@ -45,7 +45,16 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 class UserListSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = [
+            'id',
+            'email',
+            'first_name',
+            'last_name',
+            'username',
+            'phone',
+            'date_joined'
+
+        ]
 
 
 class PupilPreviewSerializer(serializers.ModelSerializer):

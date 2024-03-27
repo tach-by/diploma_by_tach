@@ -76,6 +76,7 @@ class CategoryCreateView(CreateAPIView):
 class RetrieveCategoryGenericView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
     serializer_class = CategoryUpdateSerializer
+    queryset = Category.objects.all()
 
     def get_object(self):
         category_id = self.kwargs.get("category_id")

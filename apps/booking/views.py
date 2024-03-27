@@ -169,6 +169,7 @@ class BookingListForParentGenericView(ListAPIView):
 class BookingwriteGenericView(RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = BookingwritableSerializer
+    queryset = Booking.objects.filter(writable=True)
 
     def get_object(self):
         booking_id = self.kwargs.get("booking_id")
